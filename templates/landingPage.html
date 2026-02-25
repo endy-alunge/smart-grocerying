@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Shopping</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body {
+  background: radial-gradient(ellipse 53% 100% at 50% 50%, #ffffff 0%, #b2b2b2 100%);
+  font-family: 'DM Sans', sans-serif;
+  color: #000;
+}
+
+/* ── NAVBAR ── */
+nav {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 60px);
+  max-width: 1800px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  border-radius: 34px;
+  background: linear-gradient(135deg, rgba(245,245,245,0.35) 0%, rgba(15,15,15,0.12) 100%);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.65),
+    inset 0 -1px 0 rgba(0,0,0,0.05);
+  animation: slideDown 0.8s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes slideDown {
+  from { opacity:0; transform: translateX(-50%) translateY(-20px); }
+  to   { opacity:1; transform: translateX(-50%) translateY(0); }
+}
+
+.nav-brand {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.3px;
+  color: #000;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: #000;
+  text-decoration: none;
+  opacity: 0.8;
+  transition: opacity .2s;
+}
+.nav-links a:hover { opacity: 1; }
+
+.nav-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 28px;
+  border: 2px solid #000;
+  border-radius: 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 17px;
+  color: #000;
+  text-decoration: none;
+  transition: background .2s, color .2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.nav-login:hover { background:#000; color:#fff; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 40px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: 100px;
+  border: 1px solid rgba(0,0,0,0.15);
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(10px);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.5);
+  margin-bottom: 32px;
+  animation: heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+}
+
+.hero-badge span { width:6px; height:6px; border-radius:50%; background:#000; display:block; }
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(80px, 11vw, 170px);
+  line-height: 0.9;
+  letter-spacing: 2px;
+  color: #000;
+  position: relative;
+  z-index: 1;
+  animation: heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+}
+
+.hero-title .outline {
+  -webkit-text-stroke: 3px #000;
+  color: transparent;
+  display: block;
+}
+
+@keyframes heroIn {
+  from { opacity:0; transform: translateY(40px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+.hero-sub {
+  font-size: 18px;
+  font-weight: 300;
+  color: rgba(0,0,0,0.5);
+  max-width: 460px;
+  line-height: 1.65;
+  margin-top: 32px;
+  animation: heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.35s both;
+}
+
+/* ── CTA LIQUID GLASS BUTTON ── */
+.cta-wrap {
+  margin-top: 52px;
+  position: relative;
+  z-index: 1;
+  animation: heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.5s both;
+}
+
+.cta-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 32px;
+  border-radius: 1000px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: #f0f0f0;
+  overflow: hidden;
+  transition: transform .25s cubic-bezier(0.34,1.56,0.64,1), box-shadow .25s;
+  box-shadow:
+    0 4px 24px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    inset 0 -1px 0 rgba(0,0,0,0.2);
+  filter: drop-shadow(0 4px 4px rgba(0,0,0,0.25));
+}
+
+.cta-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(0deg, rgba(255,255,255,0.06), rgba(255,255,255,0.06)),
+    linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    rgba(204,204,204,0.5);
+  background-blend-mode: normal, normal, color-burn;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.cta-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(0,0,0,0.2);
+  mix-blend-mode: screen;
+}
+
+.cta-btn:hover { transform: scale(1.05); box-shadow: 0 8px 36px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.2); }
+
+.cta-btn-text {
+  position: relative;
+  z-index: 2;
+  mix-blend-mode: plus-lighter;
+}
+
+.cta-arrow {
+  position: relative;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  mix-blend-mode: plus-lighter;
+  transition: transform .2s;
+}
+.cta-btn:hover .cta-arrow { transform: translateX(3px); }
+
+/* ── HERO IMAGE SHOWCASE ── */
+.hero-image {
+  margin-top: 64px;
+  width: 72%;
+  max-width: 1200px;
+  height: 360px;
+  border-radius: 28px;
+  position: relative;
+  overflow: hidden;
+  animation: heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.65s both;
+  box-shadow:
+    0 32px 80px rgba(0,0,0,0.18),
+    0 2px 8px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.hero-image-inner {
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(180,180,180,0.15) 100%);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 40px;
+}
+
+/* Product cards inside the showcase */
+.product-card {
+  flex: 1;
+  max-width: 280px;
+  border-radius: 20px;
+  padding: 28px 24px;
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.7);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform .3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.product-card:hover { transform: translateY(-6px); }
+
+.product-emoji {
+  font-size: 48px;
+  text-align: center;
+  line-height: 1;
+}
+
+.product-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.4);
+}
+
+.product-name {
+  font-size: 17px;
+  font-weight: 500;
+  color: #000;
+}
+
+.product-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.product-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 0.5px;
+  color: #000;
+}
+
+.product-deal {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 100px;
+  background: rgba(0,0,0,0.08);
+  color: rgba(0,0,0,0.6);
+  letter-spacing: 0.04em;
+}
+
+/* ── SCROLL INDICATOR ── */
+.scroll-hint {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.8s both;
+  color: rgba(0,0,0,0.35);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.scroll-dot {
+  width: 24px;
+  height: 40px;
+  border: 2px solid rgba(0,0,0,0.25);
+  border-radius: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-dot::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 8px;
+  border-radius: 100px;
+  background: rgba(0,0,0,0.4);
+  animation: scrollBob 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollBob {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity:1; }
+  80% { transform: translateX(-50%) translateY(18px); opacity:0; }
+}
+
+/* ── DEALS SECTION ── */
+.deals {
+  padding: 80px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.4);
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 5vw, 80px);
+  line-height: 0.95;
+  color: #000;
+  margin-bottom: 48px;
+}
+
+.deals-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+
+.deal-card {
+  border-radius: 24px;
+  padding: 36px 32px;
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.7);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform .3s cubic-bezier(0.34,1.56,0.64,1), box-shadow .3s;
+  cursor: pointer;
+}
+.deal-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.7);
+}
+
+.deal-card.featured {
+  grid-row: span 2;
+  justify-content: flex-end;
+  min-height: 380px;
+  background: rgba(255,255,255,0.6);
+}
+
+.deal-big-emoji {
+  font-size: 72px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.deal-card .product-tag { margin: 0; }
+.deal-card .product-name { font-size: 20px; }
+
+.deal-percent {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px;
+  line-height: 1;
+  color: #000;
+}
+
+.deal-percent-small {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px;
+  line-height: 1;
+  color: #000;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 48px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  font-size: 14px;
+  color: rgba(0,0,0,0.4);
+  font-weight: 400;
+}
+
+footer .footer-brand {
+  font-weight: 500;
+  color: #000;
+  font-size: 16px;
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-brand">ShopSmart</div>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Deals</a></li>
+    <li><a href="#">Cart</a></li>
+  </ul>
+  <a href="#" class="nav-login">Login</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- <div class="hero-badge"><span></span> Now with AI-powered recommendations</div> -->
+
+  <h1 class="hero-title">
+    Smart
+    <span class="outline">Shopping</span>
+  </h1>
+
+  <p class="hero-sub">
+    Shopping made easy, smart shopping — every single day.
+  </p>
+
+  <div class="cta-wrap">
+    <a href="{{ url_for('userInput') }}" class="cta-btn">
+      <span class="cta-btn-text">Start Shopping</span>
+      <span class="cta-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- Product showcase -->
+  <div class="hero-image">
+    <div class="hero-image-inner">
+      <div class="product-card">
+        <div class="product-emoji">🎧</div>
+        <div class="product-tag">Electronics</div>
+        <div class="product-name">Wireless Headphones Pro</div>
+        <div class="product-price-row">
+          <div class="product-price">$79</div>
+          <div class="product-deal">−45%</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-emoji">⌚</div>
+        <div class="product-tag">Wearables</div>
+        <div class="product-name">Smart Watch Series X</div>
+        <div class="product-price-row">
+          <div class="product-price">$149</div>
+          <div class="product-deal">−30%</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-emoji">💻</div>
+        <div class="product-tag">Computers</div>
+        <div class="product-name">Ultra Slim Laptop 14"</div>
+        <div class="product-price-row">
+          <div class="product-price">$899</div>
+          <div class="product-deal">−20%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-dot"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- DEALS SECTION -->
+<section class="deals">
+  <div class="section-label">Today's highlights</div>
+  <h2 class="section-title">Hot Deals</h2>
+
+  <div class="deals-grid">
+    <div class="deal-card featured">
+      <span class="deal-big-emoji">📸</span>
+      <div class="product-tag">Photography</div>
+      <div class="product-name" style="font-size:24px;">Mirrorless Camera Bundle</div>
+      <div class="deal-percent">−55%</div>
+      <div class="product-price" style="font-size:32px;">$499</div>
+    </div>
+
+    <div class="deal-card">
+      <span style="font-size:36px;">🎮</span>
+      <div class="product-tag">Gaming</div>
+      <div class="product-name">Controller Elite</div>
+      <div class="deal-percent-small">−35%</div>
+      <div class="product-price" style="font-size:22px;">$59</div>
+    </div>
+
+    <div class="deal-card">
+      <span style="font-size:36px;">🔊</span>
+      <div class="product-tag">Audio</div>
+      <div class="product-name">Portable Speaker</div>
+      <div class="deal-percent-small">−40%</div>
+      <div class="product-price" style="font-size:22px;">$39</div>
+    </div>
+
+    <div class="deal-card">
+      <span style="font-size:36px;">📱</span>
+      <div class="product-tag">Mobile</div>
+      <div class="product-name">Phone Stand Pro</div>
+      <div class="deal-percent-small">−50%</div>
+      <div class="product-price" style="font-size:22px;">$19</div>
+    </div>
+
+    <div class="deal-card">
+      <span style="font-size:36px;">🖱️</span>
+      <div class="product-tag">Peripherals</div>
+      <div class="product-name">Ergonomic Mouse</div>
+      <div class="deal-percent-small">−25%</div>
+      <div class="product-price" style="font-size:22px;">$44</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">ShopSmart</div>
+  <div>© 2025 ShopSmart. All rights reserved.</div>
+  <div style="display:flex;gap:28px;">
+    <a href="#" style="color:inherit;text-decoration:none;">Privacy</a>
+    <a href="#" style="color:inherit;text-decoration:none;">Terms</a>
+    <a href="#" style="color:inherit;text-decoration:none;">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
